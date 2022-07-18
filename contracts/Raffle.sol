@@ -98,7 +98,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
      *@dev This is the function that Chainlink calls to pick a winner.
      */
 
-    function checkUpkeep(bytes calldata) public override returns (bool upkeepNeeded, bytes memory) {
+    function checkUpkeep(bytes memory) public override returns (bool upkeepNeeded, bytes memory) {
         bool isOpen = (RaffleState.OPEN == s_raffleState);
         bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval);
         bool hasPlayers = (s_players.length > 0);
@@ -111,7 +111,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     ) external override {
         (bool upkeepNeeded, ) = checkUpkeep("");
         if (!upkeepNeeded) {
-            Raffle__UpkeepNotNeeded(
+            revert Raffle__UpkeepNotNeeded(
                 address(this).balance,
                 s_players.length,
                 uint256(s_raffleState)
@@ -152,5 +152,25 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     function getRecentWinner() public view returns (address) {
         return s_recentWinner;
+    }
+
+    function getRaffleState() public view returns (RaffleState) {
+        return s_raffleState;
+    }
+
+    function getNumWords() public pure returns (uint32) {
+        return NUM_WORDS;
+    }
+
+    function getNumberOfPlayers() public view returns (uint256) {
+        return s_players.length;
+    }
+
+    function getLatestTimeStamp() public view returns (uint256) {
+        return s_lastTimeStamp;
+    }
+
+    function getRequestConfirmations() public pure returns (uint256) {
+        return REQUEST_CONFIRMATION;
     }
 }
