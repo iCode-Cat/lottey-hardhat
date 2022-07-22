@@ -13,7 +13,6 @@ module.exports = {
     networks: {
         hardhat: {
             chainId: 31337,
-            blockConfirmations: 1,
         },
         rinkeby: {
             chainId: 4,
