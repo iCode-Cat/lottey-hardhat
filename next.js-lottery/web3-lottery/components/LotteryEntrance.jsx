@@ -1,15 +1,18 @@
+/*eslint-disable*/
 import { ethers } from "ethers"
 import React, { useEffect, useState } from "react"
-import { useWeb3Contract, useMoralis } from "react-moralis"
+import { useWeb3Contract, useMoralis, useMoralisWeb3Api } from "react-moralis"
 import { abi, contractAddresses } from "../constants"
 import { useNotification } from "@web3uikit/core"
 
 const LotteryEntrance = () => {
+    const Web3Api = useMoralisWeb3Api()
+
     const [enteranceFee, setEntranceFee] = useState("0")
     const [numPlayer, setNumPlayer] = useState("0")
     const [recentWinner, setRecentWinner] = useState("0")
 
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
+    const { chainId: chainIdHex, isWeb3Enabled, Moralis } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const raffleAddress = chainId in contractAddresses ? contractAddresses[chainId][0] : null
 
@@ -58,14 +61,6 @@ const LotteryEntrance = () => {
         setNumPlayer(numPlayersFromCall)
         setRecentWinner(recentWinnerFromCall)
     }
-
-    useEffect(() => {
-        if (isWeb3Enabled) {
-            // try to read the raffle entrance fee
-
-            updateUI()
-        }
-    }, [isWeb3Enabled])
 
     const handleNewNotification = () => {
         dispatch({

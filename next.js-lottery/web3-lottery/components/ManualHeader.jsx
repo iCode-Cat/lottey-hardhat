@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react"
+/* eslint-disable */
+import { useEffect } from "react"
 import { useMoralis } from "react-moralis"
-import Button from "./Button"
 
 const ManualHeader = () => {
-    const [accountConnected, setAccountConnected] = useState(false)
+    // const [accountConnected, setAccountConnected] = useState(false)
     const { enableWeb3, account, isWeb3Enabled, Moralis, deactivateWeb3, isWeb3EnableLoading } =
         useMoralis()
 
